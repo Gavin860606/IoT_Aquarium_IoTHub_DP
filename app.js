@@ -1,15 +1,18 @@
 'use strict';
 
 const express = require('express');
+var ip = require('ip');
+var http = require('http'); 
 var request = require('request');
 var cors = require('cors');
 // Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
+const HOST = ip.address();
+const PORT = 3999;
 
 // App
 const app = express();
 var gReqBody = {}
+var server = http.createServer(app); 
 
 var eventGridHook = function(req, res) {
 
@@ -74,5 +77,10 @@ app.post('/api/GavinEdgeX', (req, res) => {
 
 app.post('/iothub/wemos_d1', eventGridHook);
 
-app.listen(PORT, HOST);
+server.listen(PORT);
+
 console.log(`Running on http://${HOST}:${PORT}`);   
+
+setInterval(() => {
+  console.log('heartbeat');
+}, 30 * 1000);
