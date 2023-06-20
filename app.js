@@ -53,6 +53,9 @@ var eventGridHook = function (req, res) {
         console.dir(msgOutput);
         //gReqBody = body.data;
         gReqBody = msgOutput;
+      } else {
+        console.log("123:", req);
+        console.log("123 toString:", req.toString());
       }
     }
     res.end();
@@ -73,17 +76,18 @@ app.use(cors());
 
 app.get("/", (req, res) => {
   try {
-    res.send(gReqBody);
+    res.status(200).send(gReqBody);
   } catch (error) {
-    console.log("/", error);
+    console.log("root error:", error);
   }
   // res.send('Hello World');
 });
+
 app.post("/api/GavinEdgeX", (req, res) => {
   try {
     console.log(req.body);
     gReqBody = req.body;
-    res.send(req.body);
+    res.status(200).send(req.body);
   } catch (error) {
     console.log("GavinEdgeX error:", error);
   }
