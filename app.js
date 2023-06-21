@@ -41,17 +41,16 @@ var eventGridHook = function (req, res) {
         //appEventBus.emit('appHook', body);
 
         //post back //這是一個必要的動作
-        var validationUrl = body.data.validationUrl;
-        request(validationUrl, function (error, response, body) {
-          console.log("error:", error); // Print the error if one occurred
-          console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
-          console.log("body:", body); // Print the HTML for the Google homepage.
-        });
+        // var validationUrl = body.data.validationUrl;
+        // request(validationUrl, function (error, response, body) {
+        //   console.log("error:", error); // Print the error if one occurred
+        //   console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
+        //   console.log("body:", body); // Print the HTML for the Google homepage.
+        // });
       } else if (body.data) {
-        console.log(body.data.body);
+        console.log("body.data",body.data);
         var msgOutput = Buffer(body.data.body, "base64").toString();
-        console.dir(msgOutput);
-        //gReqBody = body.data;
+        console.log("body.data.body",msgOutput);
         gReqBody = msgOutput;
       } else {
         console.log("123:", req);
@@ -101,4 +100,4 @@ console.log(`Running on http://${HOST}:${PORT}`);
 
 setInterval(() => {
   console.log("heartbeat");
-}, 30 * 1000);
+}, 60 * 1000);
