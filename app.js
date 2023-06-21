@@ -16,7 +16,6 @@ const PORT = 80;
 const app = express();
 var gReqBody = {};
 var server = http.createServer(app);
-var last_update
 var eventGridHook = function (req, res) {
   try {
     //console.dir(req.body);
@@ -56,7 +55,7 @@ var eventGridHook = function (req, res) {
         if (body.data.body) {
           var msgOutput = Buffer(body.data.body, "base64").toString();
           console.log("body.data.body", msgOutput);
-          gReqBody = msgOutput;
+          gReqBody = JSON.parse(msgOutput);
           gReqBody['last_update'] = moment().format('YYYY-MM-DD HH:mm')
         }
       } else {
