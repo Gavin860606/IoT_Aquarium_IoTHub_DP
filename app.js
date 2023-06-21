@@ -57,7 +57,7 @@ var eventGridHook = function (req, res) {
           var msgOutput = Buffer(body.data.body, "base64").toString();
           console.log("body.data.body", msgOutput);
           gReqBody = msgOutput;
-          gReqBody.last_update = moment().format('YYYY-MM-DD HH:mm')
+          gReqBody['last_update'] = moment().format('YYYY-MM-DD HH:mm')
         }
       } else {
         console.log("123:", req);
