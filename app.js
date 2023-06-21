@@ -21,6 +21,7 @@ var eventGridHook = function (req, res) {
     console.log("JavaScript HTTP trigger function begun");
     var validationEventType = "Microsoft.EventGrid.SubscriptionValidationEvent";
 
+
     for (var events in req.body) {
       var body = req.body[events];
       console.log("body:" + events);
@@ -49,9 +50,11 @@ var eventGridHook = function (req, res) {
         // });
       } else if (body.data) {
         console.log("body.data",body.data);
-        var msgOutput = Buffer(body.data.body, "base64").toString();
-        console.log("body.data.body",msgOutput);
-        gReqBody = msgOutput;
+        if(body.data.body){
+          var msgOutput = Buffer(body.data.body, "base64").toString();
+          console.log("body.data.body",msgOutput);
+          gReqBody = msgOutput;
+        }
       } else {
         console.log("123:", req);
         console.log("123 toString:", req.toString());
