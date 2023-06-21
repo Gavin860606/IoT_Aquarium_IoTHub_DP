@@ -5,6 +5,9 @@ var ip = require("ip");
 var http = require("http");
 var request = require("request");
 var cors = require("cors");
+var moment = require("moment-timezone");
+moment.tz.setDefault("Asia/Taipei");
+
 // Constants
 const HOST = ip.address();
 const PORT = 80;
@@ -13,7 +16,7 @@ const PORT = 80;
 const app = express();
 var gReqBody = {};
 var server = http.createServer(app);
-
+var last_update
 var eventGridHook = function (req, res) {
   try {
     //console.dir(req.body);
@@ -30,9 +33,9 @@ var eventGridHook = function (req, res) {
       if (body.data && body.eventType == validationEventType) {
         console.log(
           "Got SubscriptionValidation event data, validation code: " +
-            body.data.validationCode +
-            " topic: " +
-            body.topic
+          body.data.validationCode +
+          " topic: " +
+          body.topic
         );
         // Do any additional validation (as required) and then return back the below response
         var code = body.data.validationCode;
@@ -49,11 +52,12 @@ var eventGridHook = function (req, res) {
         //   console.log("body:", body); // Print the HTML for the Google homepage.
         // });
       } else if (body.data) {
-        console.log("body.data",body.data);
-        if(body.data.body){
+        console.log("body.data", body.data);
+        if (body.data.body) {
           var msgOutput = Buffer(body.data.body, "base64").toString();
-          console.log("body.data.body",msgOutput);
+          console.log("body.data.body", msgOutput);
           gReqBody = msgOutput;
+          gReqBody.last_update = moment().format('YYYY-MM-DD HH:mm')
         }
       } else {
         console.log("123:", req);
@@ -100,6 +104,8 @@ app.post("/iothub/wemos_d1", eventGridHook);
 server.listen(PORT);
 
 console.log(`Running on http://${HOST}:${PORT}`);
+
+
 
 setInterval(() => {
   console.log("heartbeat");
