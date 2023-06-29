@@ -6,7 +6,10 @@ var http = require("http");
 var request = require("request");
 var cors = require("cors");
 var moment = require("moment-timezone");
+var mqttClient = require('./lib/iothub_client')
 moment.tz.setDefault("Asia/Taipei");
+
+
 
 // Constants
 const HOST = ip.address();
@@ -97,6 +100,29 @@ app.post("/api/GavinEdgeX", (req, res) => {
     console.log("GavinEdgeX error:", error);
   }
 });
+
+app.post("/api/changefanspeed", async (req, res) => {
+  try {
+    let fanspeed = req.body.fanspeed
+    let response = await mqttClient.IoTEdge.changeFanspeed(fanspeed)
+    console.log(response);
+    res.send(response);
+  } catch (error) {
+    console.log("GavinEdgeX error:", error);
+  }
+});
+
+app.post("/api/changemode", async (req, res) => {
+  try {
+    let mode = req.body.mode
+    let response = await mqttClient.IoTEdge.changeMode(mode)
+    console.log(response);
+    res.send(response);
+  } catch (error) {
+    console.log("GavinEdgeX error:", error);
+  }
+});
+
 
 app.post("/iothub/wemos_d1", eventGridHook);
 
